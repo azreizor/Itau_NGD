@@ -1,0 +1,95 @@
+Flask==2.1.2
+openpyxl==3.0.10
+pyodbc==4.0.32
+pandas==1.4.3
+XlsxWriter==3.0.3
+configparser==5.3.0
+waitress==2.1.2
+Flask-Session==0.4.0
+pywin32-ctypes==0.2.0
+altgraph==0.17.3
+pefile==2022.5.30
+Flask-Bcrypt==1.0.1
+
+
+
+
+
+
+
+flaskwebgui==0.3.5 ##se estaba autocerrando
+waitress==2.1.2
+PyQt5==5.15.7
+pip install PyQtWebEngine
+
+PyFladesk==1.1
+
+
+datas=[('templates','templates'),('static','static')],
+console=True,
+name='GestorDocumental',
+
+pyinstaller --name NGD_16_03_2023 --onefile --windowed --add-data="static;static" --add-data="templates;templates" app.py
+
+pyinstaller --name GestorDocumental --onefile --windowed --add-data="static;static" --add-data="templates;templates" app.py
+
+pyinstaller --name GestorDocumental_native --onefile --windowed --add-data="static;static" --add-data="templates;templates" app.py
+
+pyinstaller --name GestorDocumental_native --icon=gestor.ico --onefile --windowed --add-data="static;static" --add-data="templates;templates" app.py
+
+###---------------------------------------------------------------------------------------------
+
+import sys
+
+
+"""este fragmento de codigo se utiliza para verificar desde donde se esta ejecutando el codigo, si esta empaquetado o esta desde una
+aplicacion en ejecucion (sin empaquetar)
+"""
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    print('running in a PyInstaller bundle')
+else:
+    print('running in a normal Python process')
+
+
+
+
+"""
+sirve para los casos en que la aplicacion esta empaquetada o cuando esta en ejecucion // aplciar al codigo de flask app
+cuando una aplicacion no esta empaquetada, la variable de python __file__ arrojara el valor de sys._MEIPASS + 'mypackage/mymodule.pyc'.
+sys._MEIPASS == a la direccion de la carpeta temporal de la aplicacion empaquetada.
+'mypackage/mymodule.pyc' == direccion+nombre del archivo
+"""
+
+from os import path
+path_to_dat = path.abspath(path.join(path.dirname(__file__), 'file.dat'))
+direccion = ruta_base(ruta.join(ruta_directorio(ruta_temporal)nombre_archivo))
+
+
+
+"""ejemplos para utilizar la ruta temporal de los archivos para la aplicacion empaquetada"""
+
+"ejemplo numero 1"
+from os import path
+bundle_dir = path.abspath(path.dirname(__file__))
+path_to_dat = path.join(bundle_dir, 'other-file.dat')
+
+
+"ejempplo numero 2"
+from pathlib import Path
+path_to_dat = Path(__file__).resolve().with_name("other-file.dat")
+
+
+
+
+
+"video de youtube"
+
+def resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for Pyinstaller"""
+    try:
+        "Pyinstaller creates a temp folder ans stores path in _MEIPASS"
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)

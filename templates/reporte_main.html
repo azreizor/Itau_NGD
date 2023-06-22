@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block page_title %} Formulario Main {% endblock %}</title>
+
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome-free/css/all.min.css') }}"/>
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/jqvmap/jqvmap.min.css') }}"/>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2/css/select2.min.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/bs-stepper/css/bs-stepper.min.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='dist/css/adminlte.min.css') }}"/>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/daterangepicker/daterangepicker.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css') }}"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='plugins/dropzone/min/dropzone.min.css') }}"/>
+
+
+
+  <!-- Font Awesome -->
+  <!-- Theme style -->
+
+  {% block links %}  {% endblock %}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="{{url_for('static', filename='dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
+    
+  </div>
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <!-- <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
+          <i class="fas fa-th-large"></i>
+        </a> -->
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <!-- <img src="{{url_for('static', filename='')}}" class="img-circle elevation-2" alt="User Image"> -->
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">Gestor Documental</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2 user-panel">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-flat" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+               {% if usuario.perfil != 'Consulta' %}
+               <li class="nav-header">Menu Carga</li>
+               <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-copy"></i>
+                  <p>
+                    Archivos de Carga
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{'/carga_findur'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Carga Findur</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/carga_murex'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Carga Murex</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/carga_confirmaciones'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Carga Confirmaciones</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/carga_rco'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Carga RCO</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/carga_contraparte'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Carga Contraparte</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/carga_base_full'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Carga Base Full</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/carga_envio_contratos'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Carga Envio Contratos</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% endif %}
+
+              <li class="nav-header">Menu Tablas</li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-table"></i>
+                  <p>
+                    Tablas de Registros
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{'/tabla_operaciones'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tabla Operaciones</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/tabla_documentos'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tabla Documentos</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/tabla_firmas'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tabla Firmas</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/tabla_clientes'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tabla Clientes</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% if usuario.perfil != 'Consulta' %}
+              <li class="nav-header">Menu Reportes</li>
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon fas fa-folder"></i>
+                  <p>
+                    Reportes Operaciones
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{'/reporte_bloqueados'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Reporte Bloqueados</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{'/reporte_institucionales'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Reporte Institucionales</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {% endif %}
+
+              {% if usuario.perfil == 'Administrador' %}
+              <li class="nav-header">Menu Usuarios</li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                    Gestion Usuarios
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{'/usuario_tabla'}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tabla Usuarios</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <br>
+              {% endif %}
+            </ul>
+          </nav>
+          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+              <!-- <img src="{{url_for('static', filename='')}}" class="img-circle elevation-2" alt="User Image"> -->
+            </div>
+            <div class="info">
+              <a href="{{'/logout'}}" class="d-block">Cerrar Sesion</a>
+            </div>
+          </div>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+  {% block page_content %}
+    <!-- Content Header (Page header) -->
+    {% block page_header %}
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard v1</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+<!-- --------------------------------------------------------------------------------- -->
+    {% endblock %}
+    <section class="content">
+      <div class="container-fluid col-xl-8 col-lg-10 col-md-12">
+        {% block page_container %}
+        <div class="row">
+
+        </div>
+        {% endblock %}
+      </div>
+    </section>
+  {% endblock %}
+  </div>
+<!-- --------------------------------------------------------------------------------- -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; <span id="copy-year"></span> <a href="#">Creasys</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 3.2.0
+    </div>
+    <script>
+      var d = new Date();
+      var year = d.getFullYear();
+      document.getElementById("copy-year").innerHTML = year;
+    </script>
+  </footer>
+<!-- --------------------------------------------------------------------------------- -->
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+
+{% block page_script %}
+
+{% endblock %}
+
+<script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/select2/js/select2.full.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/moment/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/inputmask/jquery.inputmask.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/bs-stepper/js/bs-stepper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/dropzone/min/dropzone.min.js') }}"></script>
+<script src="{{ url_for('static', filename='dist/js/adminlte.min.js') }}"></script>
+<script src="{{ url_for('static', filename='dist/js/demo.js') }}"></script>
+
+<script src="{{ url_for('static', filename='plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/jquery-validation/additional-methods.min.js') }}"></script>
+
+
+
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+    //Money Euro
+    $('[data-mask]').inputmask()
+
+    //Date picker
+    $('#reservationdate5').datetimepicker({
+      format: 'DD/MM/YYYY'
+    });
+    $('#reservationdate6').datetimepicker({
+      format: 'DD/MM/YYYY'
+    });
+    $('#reservationdate7').datetimepicker({
+      format: 'DD/MM/YYYY'
+    });
+    $('#reservationdate8').datetimepicker({
+      format: 'DD/MM/YYYY'
+    });
+    $('#reservationdate9').datetimepicker({
+      format: 'DD/MM/YYYY'
+    });
+
+    //Date range picker
+    $('#reservation').daterangepicker()
+    //Date range picker with time picker
+    $('#reservationtime').daterangepicker({
+      timePicker: true,
+      timePickerIncrement: 30,
+      locale: {
+        format: 'MM/DD/YYYY hh:mm A'
+      }
+    })
+    //Date range as a button
+    $('#daterange-btn').daterangepicker(
+      {
+        ranges   : {
+          'Today'       : [moment(), moment()],
+          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+          'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        startDate: moment().subtract(29, 'days'),
+        endDate  : moment()
+      },
+      function (start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+      }
+    )
+  })
+</script>
+<script>
+  $( "#nueva_operacion" ).validate({
+    rules: {
+      sistema_origen: {
+        required: true
+      },
+      producto: {
+        required: true
+      },
+      codigo_trader: {
+        required: true
+      },
+      rut_ejecutivo: {
+        required: true
+      },
+      rut_cliente: {
+        required: true
+      },
+      compra_venta: {
+        required: true
+      },
+      divisa_inicial: {
+        required: true
+      },
+      precio_inicial: {
+        required: true
+      },
+      tasa_cambio: {
+        required: true
+      },
+      precio_final: {
+        required: true
+      },
+      fecha_operacion: {
+        required: true
+      },
+      fecha_vencimiento: {
+        required: true
+      },
+      valor_mtm: {
+        required: true
+      },
+      medio_suscripcion: {
+        required: true
+      }
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+    }
+  });
+  </script>
+  <script>
+    $( "#nuevo_documento" ).validate({
+      rules: {
+        fecha_inicio: {
+          required: true
+        },
+        fecha_termino: {
+          required: true
+        },
+        fecha_envio: {
+          required: true
+        },
+        fecha_recepcion: {
+          required: true
+        },
+        id_tipo_documento: {
+          required: true
+        },
+        id_custodio: {
+          required: true
+        },
+      },
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
+      }
+    });
+  </script>
+  <script type="text/javascript">
+    var specialKeys = new Array();
+    specialKeys.push(35); //#
+    specialKeys.push(37); //%
+    specialKeys.push(43); //+
+    specialKeys.push(45); //-
+    specialKeys.push(61); //=
+    specialKeys.push(64); //@
+    $(function () {
+      $('input[type=text],textarea').on('keypress', function (e) {
+        var ret;
+        var keyCode = e.keyCode == 0 ? e.charCode : e.keyCode;
+        ret = ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122) || (specialKeys.indexOf(e.keyCode) != -1 && e.charCode != e.keyCode));
+        if (specialKeys.indexOf(keyCode) != -1) {
+          ret = true;
+        }
+        return ret;
+      });
+    });
+</script>
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+</body>
+</html>

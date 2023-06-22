@@ -1,0 +1,131 @@
+{% extends 'carga_main.html' %} {% block page_title %} Carga Contraparte {% endblock %} {%
+  block page_header %}
+  <div class="content-header">
+    <div class="container-fluid">
+      {% if status == '200' %}
+      <div class="alert alert-primary alert-dismissible fade show" role="alert" id="alert-primary" name="alert-primary">
+        <strong>Ejecucion Exitosa!!!</strong> La informacion de Contrapartes ha sido Ingresada Correctamente.
+        {% if cambios %}
+        <br><br>
+        <h6>Detalle:</h6>
+          {% for key, value in cambios.items() %}
+            {% if value != 0 %}
+              <h6>{{key}}: {{value}}</h6>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+      {% if status == '500' %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert-danger" name="alert-danger">
+        <strong>Error en la Solicitud</strong> Ocurrio un Fallo en la transaccion.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+      {% if status == '400' %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-danger" name="alert-danger">
+        <strong>Error en la Solicitud</strong> El formato del archivo Cargado NO Corresponde, por favor ingresa un Archivo de Contrapartes.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Carga Datos Contraparte</h1>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <!-- <li class="breadcrumb-item"><a href="#">Inicio</a></li> -->
+            <li class="breadcrumb-item">Inicio</li>
+            <li class="breadcrumb-item">Carga</li>
+            <li class="breadcrumb-item active">Contraparte</li>
+          </ol>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+  {% endblock %}
+  
+  <!-- content
+      container-fluid -->
+  {% block page_container %}
+  <div class="row">
+    <!-- left column -->
+    <div class="col-12">
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Contraparte</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form class="form-horizontal" enctype = "multipart/form-data" action ='/subir_archivo' method="post" class="form-horizontal">
+          <div class="card-body container-fluid col-xl-10">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label" for="exampleInputFile">Archivo Contraparte</label>
+              <div class="input-group col-sm-8">
+                <div class="custom-file">
+                  <input type="text" id="origen" name="origen" hidden value="contraparte">
+
+                  <input type="file" class="custom-file-input" id="archivoexcel" name="archivoexcel">
+                  <label class="custom-file-label" for="exampleInputFile">Buscar Archivo</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer">
+            <div class="mx-5">
+              <button type="submit" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" id="ingresar" disabled="disabled">Ingresar</button>
+            </div>
+          </div>
+          <!-- /.card-footer -->
+        </form>
+      </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Estado Operacion</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              <h5>Se estan cargando los Registros y esto podria tomar un tiempo</h2>
+              <h4>Por favor, No Abandones el Sitio</h1>
+            </div>
+            <div class="text-center mb-3">
+              <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+  
+  <!-- content
+  container-fluid -->
+  
+  {% block page_script %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script>
+    $("#archivoexcel").change(function(){
+      $("#ingresar").prop("disabled", this.files.length == 0);
+    });
+  </script>
+  {% endblock %}
+  

@@ -1,0 +1,258 @@
+{% extends 'tabla_main.html' %}
+
+{% block page_title %} Documentos {% endblock %}
+{% block links %} {% endblock %}
+
+{% block page_header %}
+<div class="content-header">
+  <div class="container-fluid">
+    {% if status == '200' %}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert" id="alert-primary" name="alert-primary">
+      <strong>Ejecucion Exitosa!!!</strong> El Nuevo Documento se ha Ingresado Correctamente.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+    {% if status == '500' %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert-warning" name="alert-warning">
+      <strong>Error de Operacion</strong> Se produjo un ERROR al ingresar El Nuevo Documento.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+    {% if status == '600' %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert-warning" name="alert-warning">
+      <strong>Error de Operacion</strong> No se ha procesado la solicitud.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+    {% if status == '700' %}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert" id="alert-primary" name="alert-primary">
+      <strong>Ejecucion Exitosa!!!</strong> La Firma se ha ingresado Correctamente.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Documentos</h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a href="#">Inicio</a></li> -->
+          <li class="breadcrumb-item">Inicio</li>
+          <li class="breadcrumb-item active">Documentos</li>
+          <input type="text" disabled hidden id="perfil" value="{{usuario.perfil}}">
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- content
+    container-fluid -->
+{% block page_container %}
+<div class="row">
+  <!-- left column -->
+  <div class="col-12">
+    <!-- general form elements -->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Listado Documentos</h3>
+        </div>
+        <div class="row justify-content-end">
+          <div class="box mr-4 mt-3">
+            {% if usuario.perfil == 'Consulta' %}
+            <a class="btn btn-block btn-primary disabled" role="button" data-toggle='modal' data-target='#modal_nuevo_documento'>Nuevo Documento</a>
+            {% else %}
+            <a class="btn btn-block btn-primary" role="button" data-toggle='modal' data-target='#modal_nuevo_documento'>Nuevo Documento</a>
+            {% endif%}
+
+
+
+          </div>
+        </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="tabla_documentos" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>Acciones</th>
+                <th>ID Documento</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Termino</th>
+                <th>Fecha Envio</th>
+                <th>Fecha Recepcion</th>
+                <th>Rut Custodio</th>
+                <th>Nombre Custodio</th>
+                <th>Tipo Documento</th>
+                <th>Estado</th>
+              </tr>
+              </thead>
+              <tbody>
+                {% if documentos|length %}
+                  {% for key, value in documentos.iterrows() %}
+                  <tr>
+                    <td>
+                      <div class="btn-group">
+                        {% if usuario.perfil == 'Consulta' %}
+                          <button type="button" class="btn btn-primary disabled">Accion</button>
+                          <button type="button" class="btn btn-primary disabled dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                        {% else %}
+                          <button type="button" class="btn btn-primary">Accion</button>
+                          <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                        {% endif %}
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item disabled" href="{{('/editar_documento')}}/?id_documento={{value['id_documento']}}">Editar</a>
+                            {% if value["id_estado"] < 6 %}
+                            <a class="dropdown-item" href="{{('/nueva_firma')}}/?id_documento={{value['id_documento']}}">Firmar Documento</a>
+                            <a class="dropdown-item" onclick="js_eliminar_documento({{value['id_documento']}})">Eliminar Documento</a>
+                            {% endif %}
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{value["id_documento"]}}</td>
+                    <td>{{value["fecha_inicio_documento"]}}</td>
+                    <td>{{value["fecha_termino_documento"]}}</td>
+                    <td>{{value["fecha_envio"]}}</td>
+                    <td>{{value["fecha_recepcion"]}}</td>
+                    <td>{{value["rut_custodio"]}}</td>
+                    <td>{{value["nombre_custodio"]}}</td>
+                    <td>{{value["tipo_documento"]}}</td>
+                    <!-- <td>{{value["dias_vigencia"]}}</td> -->
+                    <td>{{value["nombre_estado"]}}</td>
+                  </tr>
+                  {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </div>
+</div>
+
+<!-- -------------------------------MODAL NUEVO DOCUMENTO --------------------------------- -->
+<div class="modal fade" id="modal_nuevo_documento">
+  <div class="modal-dialog" style="max-width: 45%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Nuevo Documento</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="nuevo_documento" class="form-horizontal">
+          <div class="card-body">
+            <input type="text" name="origen" hidden value="nuevo_documento">
+            <div class="card-body container-fluid col-xl-10">
+              <div class="form-group row">
+                <input type="hidden" name="num_op_documento" id="num_op_documento" value="0">
+                <label class="col-sm-4 col-form-label">Custodio</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="id_custodio" id="id_custodio">
+                  {% if custodios|length %}
+                    <option disabled selected>Seleccionar</option>
+                    {% for key, value in custodios.iterrows() %}
+                    <option value="{{value['id_custodio']}}">{{value["nombre_custodio"]}}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option disabled selected>No Existen Custodios</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Tipo Documento</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="id_tipo_documento" id="id_tipo_documento">
+                    {% if tipo_documentos|length %}
+                      <option disabled selected>Seleccionar</option>
+                      {% for key, value in tipo_documentos.iterrows() %}
+                      <option value="{{value['id_tipo_documento']}}">{{value["tipo_documento"]}}</option>
+                      {% endfor %}
+                    {% else %}
+                      <option disabled selected>No Existen Custodios</option>
+                    {% endif %}
+                    </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Fecha Inicio</label>
+                <div class="input-group date col-sm-8" id="reservationdate5" data-target-input="nearest">
+                  <div class="input-group-prepend" data-target="#reservationdate5" data-toggle="datetimepicker">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                  data-target="#reservationdate5" name="fecha_inicio" id="fecha_inicio"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Fecha Termino</label>
+                <div class="input-group date col-sm-8" id="reservationdate6" data-target-input="nearest">
+                  <div class="input-group-prepend" data-target="#reservationdate6" data-toggle="datetimepicker">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                  data-target="#reservationdate6" name="fecha_termino" id="fecha_termino"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Fecha Envio</label>
+                <div class="input-group date col-sm-8" id="reservationdate7" data-target-input="nearest">
+                  <div class="input-group-prepend" data-target="#reservationdate7" data-toggle="datetimepicker">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                  data-target="#reservationdate7" name="fecha_envio" id="fecha_envio"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Fecha Recepcion</label>
+                <div class="input-group date col-sm-8" id="reservationdate8" data-target-input="nearest">
+                  <div class="input-group-prepend" data-target="#reservationdate8" data-toggle="datetimepicker">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                  data-target="#reservationdate8" name="fecha_recepcion" id="fecha_recepcion"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <div class="mx-5">
+                <button type="button" id="envio_nuevo_documento" class="btn btn-success float-right">Ingresar</button>
+                <a class="btn btn-danger" href="{{'/tabla_documentos'}}" role="button">Cancelar</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block page_script %}
+
+<script src="{{ url_for('static', filename='dist/js/tabla_documentos.js') }}"></script>
+
+{% endblock %}

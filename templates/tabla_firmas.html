@@ -1,0 +1,128 @@
+{% extends 'tabla_main.html' %}
+
+{% block page_title %} Firmas {% endblock %}
+{% block links %} {% endblock %}
+
+{% block page_header %}
+<div class="content-header">
+  <div class="container-fluid">
+    {% if status == '200' %}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert" id="alert-primary" name="alert-primary">
+      <strong>Ejecucion Exitosa!!!</strong> La Nueva Firma se ha Ingresado Correctamente.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+    {% if status == '500' %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert-warning" name="alert-warning">
+      <strong>Error de Operacion</strong> Se produjo un ERROR al ingresar La Nueva Firma.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+    {% if status == '600' %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert-warning" name="alert-warning">
+      <strong>Error de Operacion</strong> No se ha procesado la solicitud.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %}
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Firmas</h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a href="#">Inicio</a></li> -->
+          <li class="breadcrumb-item">Inicio</li>
+          <li class="breadcrumb-item active">Firmas</li>
+          <input type="text" disabled hidden id="perfil" value="{{usuario.perfil}}">
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- content
+    container-fluid -->
+{% block page_container %}
+<div class="row">
+  <!-- left column -->
+  <div class="col-12">
+    <!-- general form elements -->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Listado Firmas</h3>
+        </div>
+        <div class="row justify-content-end">
+          <div class="box mr-4 mt-3">
+            <!-- <a class="btn btn-block btn-info disabled" href="{{'/nueva_firma'}}" role="button">Nueva Firma</a> -->
+          </div>
+        </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="tabla_firmas" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>Acciones</th>
+                <th>ID Documento</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Termino</th>
+                <th>Fecha Firma</th>
+                <th>Rut Apoderado</th>
+                <th>Nombre Apoderado</th>
+              </tr>
+              </thead>
+              <tbody>
+                {% if firmas|length %}
+                  {% for key, value in firmas.iterrows() %}
+                  <tr>
+                    <td>
+                      <div class="btn-group">
+                        {% if usuario.perfil == 'Consulta' %}
+                          <button type="button" class="btn btn-primary disabled">Accion</button>
+                          <button type="button" class="btn btn-primary disabled dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                        {% else %}
+                          <button type="button" class="btn btn-primary">Accion</button>
+                          <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                        {% endif %}
+                        <div class="dropdown-menu" role="menu">
+                          <a class="dropdown-item disabled" href="{{('/editar_documento')}}/?id_documento={{value['id_documento']}}">Editar</a>
+                          <!-- <a class="dropdown-item" href="#">Eliminar</a> -->
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{value["id_documento"]}}</td>
+                    <td>{{value["fecha_inicio_documento"]}}</td>
+                    <td>{{value["fecha_termino_documento"]}}</td>
+                    <td>{{value["fecha_firma"]}}</td>
+                    <td>{{value["rut_apoderado"]}}</td>
+                    <td>{{value["nombre_apoderado"]}}</td>
+                  </tr>
+                  {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block page_script %}
+
+<script src="{{ url_for('static', filename='dist/js/tabla_firmas.js') }}"></script>
+
+{% endblock %}

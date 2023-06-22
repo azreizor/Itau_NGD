@@ -1,0 +1,534 @@
+{% extends 'tabla_main.html' %}
+
+{% block page_title %} Operaciones {% endblock %}
+{% block links %} {% endblock %}
+
+{% block page_header %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Operaciones</h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a href="#">Inicio</a></li> -->
+          <li class="breadcrumb-item">Inicio</li>
+          <li class="breadcrumb-item active">Operaciones</li>
+          <input type="text" disabled hidden id="perfil" value="{{usuario.perfil}}">
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- content
+    container-fluid -->
+{% block page_container %}
+<div class="row">
+  <!-- left column -->
+  <div class="col-12">
+    <!-- general form elements -->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Listado Operaciones</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="card-body">
+              <!--  -->
+              <div class="form-group row col-12">
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">N°Operacion</label>
+                  <div class="col-sm-6">
+                    <input type="number" class="form-control" name="fil_num_operacion" id="fil_num_operacion" placeholder="Operacion">
+                  </div>
+                </div>
+                <div class="form-group row col-2"></div>
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Producto</label>
+                  <div class="col-sm-6">
+                    <select class="form-control select2" style="width: 100%;" name="fil_nombre_producto" id="fil_nombre_producto">
+                      {% if productos|length %}
+                        <option selected="selected" value>Producto</option>
+                        {% for key, value in productos.iterrows() %}
+                        <option value="{{value['nombre_producto']}}">{{value['nombre_producto']}}</option>
+                        {% endfor %}
+                      {% else %}
+                        <option disabled selected="selected">No Existen Productos</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!--  -->
+              <div class="form-group row col-12">
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Nombre Cliente</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" name="fil_nombre_cliente" id="fil_nombre_cliente" placeholder="Nombre">
+                  </div>
+                </div>
+                <div class="form-group row col-2"></div>
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Rut Cliente</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" name="fil_rut_cliente" id="fil_rut_cliente" placeholder="Rut">
+                  </div>
+                </div>
+              </div>
+              <!--  -->
+              <hr>
+              <br>
+              <div class="form-group row col-12">
+
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Fecha Operacion - Desde</label>
+                  <div class="input-group date col-sm-4" id="reservationdate9" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#reservationdate9" data-toggle="datetimepicker">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                    data-target="#reservationdate9" name="fil_fecha_operacion_inicio" id="fil_fecha_operacion_inicio"/>
+                  </div>
+                </div>
+
+                <div class="form-group row col-2"></div>
+
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Fecha Operacion - Hasta</label>
+                  <div class="input-group date col-sm-4" id="reservationdate10" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#reservationdate10" data-toggle="datetimepicker">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                    data-target="#reservationdate10" name="fil_fecha_operacion_termino" id="fil_fecha_operacion_termino"/>
+                  </div>
+                </div>
+
+              </div>
+              <!--  -->
+              <div class="form-group row col-12">
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Fecha Vencimiento - Desde</label>
+                  <div class="input-group date col-sm-4" id="reservationdate11" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#reservationdate11" data-toggle="datetimepicker">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                    data-target="#reservationdate11" name="fil_fecha_vencimiento_inicio" id="fil_fecha_vencimiento_inicio"/>
+                  </div>
+                </div>
+                <div class="form-group row col-2"></div>
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Fecha Vencimiento - Hasta</label>
+                  <div class="input-group date col-sm-4" id="reservationdate12" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#reservationdate12" data-toggle="datetimepicker">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                    data-target="#reservationdate12" name="fil_fecha_vencimiento_termino" id="fil_fecha_vencimiento_termino"/>
+                  </div>
+                </div>
+              </div>
+              <!--  -->
+              <div class="form-group row col-12">
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Fecha Envio - Desde</label>
+                  <div class="input-group date col-sm-4" id="reservationdate13" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#reservationdate13" data-toggle="datetimepicker">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                    data-target="#reservationdate13" name="fil_fecha_envio_inicio" id="fil_fecha_envio_inicio"/>
+                  </div>
+                </div>
+                <div class="form-group row col-2"></div>
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Fecha Envio - Hasta</label>
+                  <div class="input-group date col-sm-4" id="reservationdate14" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#reservationdate14" data-toggle="datetimepicker">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                    data-target="#reservationdate14" name="fil_fecha_envio_termino" id="fil_fecha_envio_termino"/>
+                  </div>
+                </div>
+              </div>
+              <!--  -->
+              <div class="form-group row col-12">
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Fecha Recepcion - Desde</label>
+                  <div class="input-group date col-sm-4" id="reservationdate15" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#reservationdate15" data-toggle="datetimepicker">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                    data-target="#reservationdate15" name="fil_fecha_recepcion_inicio" id="fil_fecha_recepcion_inicio"/>
+                  </div>
+                </div>
+                <div class="form-group row col-2"></div>
+                <div class="form-group row col-5">
+                  <label class="col-sm-6 col-form-label">Fecha Recepcion - Hasta</label>
+                  <div class="input-group date col-sm-4" id="reservationdate16" data-target-input="nearest">
+                    <div class="input-group-prepend" data-target="#reservationdate16" data-toggle="datetimepicker">
+                      <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                    data-target="#reservationdate16" name="fil_fecha_recepcion_termino" id="fil_fecha_recepcion_termino"/>
+                  </div>
+                </div>
+              </div>
+              <button onclick="js_validar_filtrar_operaciones()" class="btn btn-primary" style="float: right !important;">Buscar</button>
+              <!--  -->
+            </div>
+            <hr>
+        </div>
+
+
+        <div class="row justify-content-end">
+          <div class="box mr-4 mt-3">
+            {% if usuario.perfil == 'Consulta' %}
+            <a class="btn btn-block btn-primary disabled" role="button" data-toggle='modal' data-target='#modal_nueva_operacion'>Nueva Operacion</a>
+            {% else %}
+            <a class="btn btn-block btn-primary" role="button" data-toggle='modal' data-target='#modal_nueva_operacion'>Nueva Operacion</a>
+            {% endif%}
+          </div>
+        </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="tabla_operaciones" class="table table-bordered table-striped display nowrap" style="width:100%">
+              <thead>
+              <tr>
+                <th>Acciones</th>
+                <th>N°Operacion</th>
+                <th>Correlativo</th>
+                <th>Origen</th>
+                <th>Producto</th>
+                <th>Compra Venta</th>
+                <th>Divisa Inicial</th>
+                <th>Monto Inicial</th>
+                <th>Tasa Cambio</th>
+                <th>Divisa Final</th>
+                <th>Monto Final</th>
+                <th>Valor MTM</th>
+                <th>Op Vencida</th>
+                <th>Rut Cliente</th>
+                <th>Nombre Cliente</th>
+                <th>Kit</th>
+                <th>Bloqueado</th>
+                <th>Fecha Operacion</th>
+                <th>Fecha Vencimiento</th>
+                <th>Fecha Envio</th>
+                <th>Fecha Recepcion</th>
+                <th>Status</th>
+                <th>Folio Contraparte</th>
+                <th>Comentario</th>
+                <th>Observacion</th>
+                <th>Trader</th>
+                <th>Ejecutivo</th>
+                <th>Jefe Grupo</th>
+                <th>Segmento</th>
+                <th>Medio Suscripcion</th>
+                <th>Medio Confirmacion</th>
+                <th>Envio Confirmacion</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </div>
+</div>
+
+<!-- -------------------------------MODAL NUEVA --------------------------------- -->
+<div class="modal fade" id="modal_nueva_operacion">
+  <div class="modal-dialog" style="max-width: 45%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Nueva operacion</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form class="form-horizontal" id="formulario_nueva_operacion">
+            <div class="card-body">
+              <input type="hidden" name="id_operacion" id="id_operacion" value="0">
+              <input type="hidden" name="habilitado" id="habilitado" value="False">
+
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Numero Operacion</label>
+                <div class="input-group col-sm-8">
+                  <input type="number" placeholder="Numero Operacion" class="form-control" name="num_operacion" id="num_operacion"
+                  onchange="js_validacion_operacion()"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Sistema Origen</label>
+                <div class="col-sm-8">
+                  <select oninput="js_validacion_operacion()" class="form-control select2" style="width: 100%;" name="sistema_origen"
+                  id="sistema_origen">
+                  {% if origenes|length %}
+                    <option disabled selected="selected" value="">Seleccionar</option>
+                    {% for key, value in origenes.iterrows() %}
+                    <option value="{{value['id_origen']}}">{{value['nombre_origen']}}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option disabled selected="selected">No Existen Origenes</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row" id="correlativo_div">
+                <label class="col-sm-4 col-form-label">Correlativo</label>
+                <div class="input-group col-sm-8">
+                  <input type="number" placeholder="Correlativo" class="form-control" name="correlativo" id="correlativo"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Tipo Producto</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="producto" id="producto">
+                  {% if productos|length %}
+                    <option disabled selected="selected" value>Seleccionar</option>
+                    {% for key, value in productos.iterrows() %}
+                    <option value="{{value['id_producto']}}">{{value['nombre_producto']}}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option disabled selected="selected">No Existen Productos</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Codigo Trader</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="codigo_trader" id="codigo_trader">
+                  {% if traders|length %}
+                    <option disabled selected="selected" value>Seleccionar</option>
+                    {% for key, value in traders.iterrows() %}
+                    <option value="{{value['codigo_trader']}}">{{value['codigo_trader']}}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option disabled selected="selected">No Existen Traders</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Rut Ejecutivo</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="rut_ejecutivo" id="rut_ejecutivo">
+                  {% if ejecutivos|length %}
+                    <option disabled selected="selected" value>Seleccionar</option>
+                    {% for key, value in ejecutivos.iterrows() %}
+                    <option value="{{value['rut_ejecutivo']}}">{{value['rut_ejecutivo']}}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option disabled selected="selected">No Existen Ejecutivos</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Rut Cliente</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="rut_cliente" id="rut_cliente">
+                  {% if clientes|length %}
+                    <option disabled selected="selected" value>Seleccionar</option>
+                    {% for key, value in clientes.iterrows() %}
+                    <option value="{{value['rut_cliente']}}">{{value['rut_cliente']}}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option disabled selected="selected">No Existen Clientes</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Compra/Venta</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="compra_venta" id="compra_venta">
+                    <option disabled selected="selected" value>Seleccionar</option>
+                    <option value="B">Compra</option>
+                    <option value="S">Venta</option>
+                    <option value="Fix Flt">Fix Flt</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Divisa Inicial</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="divisa_inicial" id="divisa_inicial">
+                  {% if divisas|length %}
+                    <option disabled selected="selected" value>Seleccionar</option>
+                    {% for key, value in divisas.iterrows() %}
+                    <option value="{{value['id_divisa']}}">{{value['codigo_divisa']}}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option disabled selected="selected">No Existen Divisas</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Precio Inicial</label>
+                <div class="input-group col-sm-8">
+                  <input
+                    type="number"
+                    placeholder="Precio Inicial"
+                    class="form-control"
+                    name="precio_inicial"
+                    id="precio_inicial"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Tasa Cambio</label>
+                <div class="col-sm-8">
+                  <input
+                    type="number"
+                    placeholder="Tasa Cambio"
+                    class="form-control"
+                    name="tasa_cambio"
+                    id="tasa_cambio"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Divisa Final</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="divisa_final" id="divisa_final">
+                  {% if divisas|length %}
+                    <option disabled selected="selected" value>Seleccionar</option>
+                    {% for key, value in divisas.iterrows() %}
+                    <option value="{{value['id_divisa']}}">{{value['codigo_divisa']}}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option disabled selected="selected">No Existen Divisas</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Precio Final</label>
+                <div class="input-group col-sm-8">
+                  <input
+                    type="number"
+                    placeholder="Precio Final"
+                    class="form-control"
+                    name="precio_final"
+                    id="precio_final"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Fecha Operacion</label>
+                <div class="input-group date col-sm-8" id="reservationdate1" data-target-input="nearest">
+                  <div class="input-group-prepend" data-target="#reservationdate1" data-toggle="datetimepicker">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                  data-target="#reservationdate1" name="fecha_operacion" id="fecha_operacion"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Fecha Vencimiento</label>
+                <div class="input-group date col-sm-8" id="reservationdate2" data-target-input="nearest">
+                  <div class="input-group-prepend" data-target="#reservationdate2" data-toggle="datetimepicker">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input  type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                  data-target="#reservationdate2" name="fecha_vencimiento" id="fecha_vencimiento"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Fecha Envio</label>
+                <div class="input-group date col-sm-8" id="reservationdate3" data-target-input="nearest">
+                  <div class="input-group-prepend" data-target="#reservationdate3" data-toggle="datetimepicker">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input  type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                  data-target="#reservationdate3" name="fecha_envio" id="fecha_envio"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Fecha Recepcion</label>
+                <div class="input-group date col-sm-8" id="reservationdate4" data-target-input="nearest">
+                  <div class="input-group-prepend" data-target="#reservationdate4" data-toggle="datetimepicker">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input  type="text" placeholder="__/__/____" class="form-control datetimepicker-input"
+                  data-target="#reservationdate4" name="fecha_recepcion" id="fecha_recepcion"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Valor MTM</label>
+                <div class="input-group col-sm-8">
+                  <input  type="number" placeholder="Valor MTM" class="form-control" name="valor_mtm" id="valor_mtm"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Medio Suscripcion</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="medio_suscripcion" id="medio_suscripcion">
+                  {% if medios|length %}
+                    <option disabled selected="selected" value>Seleccionar</option>
+                    {% for key, value in medios.iterrows() %}
+                    <option value="{{value['id_medio']}}">{{value['nombre_medio']}}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option disabled selected="selected">No Existen Medios</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Folio Contraparte</label>
+                <div class="col-sm-8">
+                  <textarea name="folio_contraparte" id="folio_contraparte"  class="form-control" rows="1" placeholder="Folio Contraparte ..."
+                  maxlength="300"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Comentario</label>
+                <div class="col-sm-8">
+                  <textarea name="comentario" id="comentario"  class="form-control" rows="2" placeholder="Comentarios ..."
+                  maxlength="300"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Observacion</label>
+                <div class="col-sm-8">
+                  <textarea name="observacion" id="observacion"  class="form-control" rows="2" placeholder="Observaciones ..."
+                  maxlength="300"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <button id="envio_nuevo_correlativo" type="button" class="btn btn-primary">Nuevo Correlativo</button>
+        <button id="envio_nueva_operacion" type="button" class="btn btn-success">Guardarff Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- -------------------------------MODAL NUEVA--------------------------------- -->
+{% endblock %}
+
+{% block page_script %}
+
+<script src="{{ url_for('static', filename='dist/js/tabla_operaciones.js') }}"></script>
+
+{% endblock %}

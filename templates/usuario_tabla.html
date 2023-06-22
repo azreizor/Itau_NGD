@@ -1,0 +1,150 @@
+{% extends 'usuario_main.html' %}
+
+{% block page_title %} Usuarios {% endblock %}
+{% block links %} {% endblock %}
+
+{% block page_header %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Usuarios</h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a href="#">Inicio</a></li> -->
+          <li class="breadcrumb-item">Inicio</li>
+          <li class="breadcrumb-item active">Usuarios</li>
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+<!-- content
+    container-fluid -->
+{% block page_container %}
+<div class="row">
+  <!-- left column -->
+  <div class="col-12">
+    <!-- general form elements -->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Listado Usuarios</h3>
+        </div>
+        <div class="row justify-content-end">
+          <div class="box mr-4 mt-3">
+            <a class="btn btn-block btn-primary" onclick="js_mostrar_modal_nuevo_usuario()" role="button" data-toggle='modal' data-target='#modal_nuevo_usuario'>Nuevo Usuario</a>
+          </div>
+        </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="tabla_operaciones" class="table table-bordered table-striped display nowrap" style="width:100%">
+              <thead>
+              <tr>
+                <th>Acciones</th>
+                <th>ID</th>
+                <th>Perfil Usuario</th>
+                <th>Nombre Usuario</th>
+                <th>Contraseña Usuario</th>
+              </tr>
+              </thead>
+              <tbody>
+                {% if usuarios|length %}
+                  {% for key, value in usuarios.iterrows() %}
+                  <tr>
+                    <td>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Accion</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                          <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                          <a class="dropdown-item" onclick="js_boton_editar_usuario({{value['id_usuario']}})">Editar</a>
+                          <a class="dropdown-item" onclick="js_boton_eliminar_usuario({{value['id_usuario']}})">Eliminar</a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{value["id_usuario"]}}</td>
+                    <td>{{value["perfil_usuario"]}}</td>
+                    <td>{{value["nombre_usuario"]}}</td>
+                    <td>{{value["pass_usuario"]}}</td>
+                  </tr>
+                  {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </div>
+</div>
+
+<!-- -------------------------------MODAL NUEVA --------------------------------- -->
+<div class="modal fade" id="modal_nuevo_usuario">
+  <div class="modal-dialog" style="max-width: 45%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Nuevo Usuario</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form class="form-horizontal" id="formulario_nuevo_usuario">
+            <div class="card-body">
+              <input type="hidden" name="id_usuario" id="id_usuario" value="0">
+              <!-- <input type="hidden" name="habilitado" id="habilitado" value="False"> -->
+
+
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Perfil Usuario</label>
+                <div class="col-sm-8">
+                  <select class="form-control select2" style="width: 100%;" name="perfil_usuario" id="perfil_usuario">
+                    <option disabled selected="selected" value>Seleccionar</option>
+                    <option value="Consulta">1 - Consulta</option>
+                    <option value="Usuario">2 - Usuario</option>
+                    <option value="Administrador">3 - Administrador</option>
+                  </select>
+                </div>
+              </div>
+
+
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Nombre Usuario</label>
+                <div class="input-group col-sm-8">
+                  <input type="text" placeholder="Nombre Usuario" class="form-control" name="nombre_usuario" id="nombre_usuario"/>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label id="label_contraseña_usuario" class="col-sm-4 col-form-label">Contraseña Usuario</label>
+                <div class="input-group col-sm-8">
+                  <input type="password" placeholder="Contraseña Usuario" class="form-control" name="contraseña_usuario" id="contraseña_usuario"/>
+                </div>
+              </div>
+
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <!-- <button id="envio_nuevo_usuario" onclick="js_validar_formulario_nuevo_usuario()" type="button" class="btn btn-success">Ingresar Usuario</button> -->
+        <button id="envio_nuevo_usuario" type="button" class="btn btn-success">Ingresar Usuario</button>
+        <button id="envio_actualizar_usuario" type="button" class="btn btn-success">Actualizar Usuario</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- -------------------------------MODAL NUEVA--------------------------------- -->
+{% endblock %}
+
+{% block page_script %}
+
+<script src="{{ url_for('static', filename='dist/js/usuario_tabla.js') }}"></script>
+
+{% endblock %}
